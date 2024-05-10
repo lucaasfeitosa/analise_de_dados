@@ -4,12 +4,12 @@ library(readxl)
 library(lubridate)
 library(tidyverse)
 
-# 1. Extraia a base geral de covid em Pernambuco
+# 1. Extraindo a base geral de covid em Pernambuco
 
 dados <- fread("bases_originais/basegeral.csv")
 str(dados)
 
-# 2. Calcule, para cada município do Estado, o total de casos confirmados e o total de óbitos por semana epidemiológica
+# 2. Calculando, para cada municÃ­pio do Estado, o total de casos confirmados e o total de Ã³bitos por semana epidemiolÃ³gica
 
 dados <- dados %>% mutate(semana_epidemiologica = epiweek(dados$dt_notificacao))
 
@@ -25,11 +25,11 @@ dados_confirmados <- dados_confirmados %>% group_by(municipio) %>% count(semana_
 
 dados_obitos <- dados_obitos %>% group_by(municipio) %>% count(semana_epidemiologica)
 
-# 3. Enriqueça a base criada no passo 2 com a população de cada município
+# 3. Enriquecendo a base criada no passo 2 com a populaÃ§Ã£o de cada municÃ­pio
 
 dados2 <- read_excel("bases_originais/tabela6579.xlsx")
 
-dados2 <- dados2 %>% rename(municipio = `Tabela 6579 - População residente estimada`)
+dados2 <- dados2 %>% rename(municipio = `Tabela 6579 - PopulaÃ§Ã£o residente estimada`)
 
 dados2 <- dados2 %>% rename(populacao = ...2)
 
@@ -39,7 +39,7 @@ dados2 <- dados2 %>% select(municipio, populacao) %>% mutate(municipio = str_to_
 
 dados3 <- left_join(dados, dados2, by = "municipio")
 
-# 4. Calcule a incidência (casos por 100.000 habitantes) e letalidade (Óbitos por 100.000 habitantes) por município a cada semana epidemiológica.
+# 4. Calculando a incidÃªncia (casos por 100.000 habitantes) e letalidade (Ã“bitos por 100.000 habitantes) por municÃ­pio a cada semana epidemiolÃ³gica.
 
 dados4 <- dados_confirmados %>% group_by(municipio) %>% count(semana_epidemiologica) %>% mutate(incidencia = n/100000)
 
