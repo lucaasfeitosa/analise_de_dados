@@ -14,7 +14,7 @@ urlLinks <- url %>% read_html %>% html_nodes("link")
 
 numerospelobarcelona <- as.data.frame(html_table(urlTables[19]))
 
-#Excluindo colunas para fins didáticos
+#Excluindo colunas
 
 numerospelobarcelona <- numerospelobarcelona[,-c(1, 3:20)]
 
